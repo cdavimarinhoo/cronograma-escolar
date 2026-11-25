@@ -1,0 +1,180 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#171b45">
+  <title>Cronograma de Estudos | E.E. Amador e Catharina</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <div id="auth" class="auth-page">
+    <div class="auth-card">
+      <div class="brand-icon">📚</div>
+      <p class="eyebrow">ESPAÇO DO ESTUDANTE</p>
+      <h1>Cronograma de Estudos</h1>
+      <p class="muted">E.E. Amador e Catharina Saporito Augusto</p>
+
+      <div class="auth-tabs">
+        <button id="loginTab" class="tab active" type="button">Entrar</button>
+        <button id="registerTab" class="tab" type="button">Cadastrar</button>
+      </div>
+
+      <form id="authForm">
+        <div id="nameField" class="field hidden">
+          <label for="studentName">Nome completo</label>
+          <input id="studentName" type="text" placeholder="Seu nome" autocomplete="name">
+        </div>
+
+        <div class="field">
+          <label for="email">E-mail</label>
+          <input id="email" type="email" placeholder="seu@email.com" required autocomplete="email">
+        </div>
+
+        <div class="field">
+          <label for="password">Senha</label>
+          <input id="password" type="password" placeholder="Mínimo de 6 caracteres" required minlength="6" autocomplete="current-password">
+        </div>
+
+        <button class="primary-btn full" id="authSubmit" type="submit">Entrar na plataforma</button>
+        <p id="authMessage" class="message" aria-live="polite"></p>
+      </form>
+      <p class="small-note">Organize seus estudos. Conquiste seus objetivos. ✨</p>
+    </div>
+  </div>
+
+  <div id="app" class="app hidden">
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <div class="brand-icon small">📚</div>
+        <div>
+          <strong>Study<span>School</span></strong>
+          <small>Área do estudante</small>
+        </div>
+      </div>
+
+      <nav>
+        <a href="#inicio" class="nav-link active">⌂ &nbsp; Início</a>
+        <a href="#cronograma" class="nav-link">▦ &nbsp; Cronograma</a>
+        <a href="#tarefas" class="nav-link">✓ &nbsp; Minhas tarefas</a>
+        <a href="#progresso" class="nav-link">▥ &nbsp; Meu progresso</a>
+      </nav>
+
+      <div class="sidebar-bottom">
+        <p>ESTUDAR É CONSTRUIR O FUTURO.</p>
+        <button id="logoutBtn" class="logout-btn">↪ Sair da conta</button>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">PAINEL DO ESTUDANTE</p>
+          <h2>Olá, <span id="welcomeName">estudante</span>! 👋</h2>
+          <p class="muted">Vamos organizar seus estudos?</p>
+        </div>
+        <div class="avatar" id="avatar">E</div>
+      </header>
+
+      <section id="inicio" class="hero">
+        <div>
+          <span class="hero-tag">✦ SEU FUTURO COMEÇA AQUI</span>
+          <h1>Pequenos estudos.<br>Grandes conquistas.</h1>
+          <p>Planeje sua semana, acompanhe suas atividades e evolua todos os dias.</p>
+          <a href="#cronograma" class="hero-btn">Organizar meus estudos →</a>
+        </div>
+        <div class="hero-illustration">🎓</div>
+      </section>
+
+      <section class="stats">
+        <article class="stat-card">
+          <span>📖</span>
+          <p>Atividades cadastradas</p>
+          <h2 id="totalTasks">0</h2>
+        </article>
+        <article class="stat-card">
+          <span>✅</span>
+          <p>Atividades concluídas</p>
+          <h2 id="completedTasks">0</h2>
+        </article>
+        <article class="stat-card">
+          <span>📈</span>
+          <p>Meu progresso</p>
+          <h2 id="progressNumber">0%</h2>
+        </article>
+      </section>
+
+      <section id="cronograma" class="panel">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">PLANEJAMENTO</p>
+            <h2>Meu cronograma semanal</h2>
+            <p class="muted">Adicione as matérias e organize seus horários.</p>
+          </div>
+        </div>
+
+        <form id="scheduleForm" class="inline-form">
+          <input id="subject" placeholder="Matéria (ex.: Matemática)" required maxlength="80">
+          <select id="scheduleDay" required>
+            <option value="">Dia da semana</option>
+            <option>Segunda-feira</option>
+            <option>Terça-feira</option>
+            <option>Quarta-feira</option>
+            <option>Quinta-feira</option>
+            <option>Sexta-feira</option>
+            <option>Sábado</option>
+            <option>Domingo</option>
+          </select>
+          <input id="scheduleTime" type="time" required>
+          <button class="primary-btn" type="submit">+ Adicionar</button>
+        </form>
+        <div id="scheduleList" class="schedule-list">
+          <p class="empty">Seu cronograma aparecerá aqui.</p>
+        </div>
+      </section>
+
+      <section id="tarefas" class="panel">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">ORGANIZAÇÃO</p>
+            <h2>Minhas tarefas</h2>
+            <p class="muted">Não deixe nenhum trabalho ou atividade para trás.</p>
+          </div>
+        </div>
+
+        <form id="taskForm" class="inline-form">
+          <input id="taskTitle" placeholder="Nome da atividade" required maxlength="120">
+          <input id="taskDate" type="date" required>
+          <button class="primary-btn" type="submit">+ Nova tarefa</button>
+        </form>
+        <div id="taskList" class="task-list">
+          <p class="empty">Você ainda não possui tarefas.</p>
+        </div>
+      </section>
+
+      <section id="progresso" class="panel">
+        <p class="eyebrow">SEU DESEMPENHO</p>
+        <h2>Meu progresso</h2>
+        <p class="muted">Acompanhe suas atividades concluídas.</p>
+        <div class="progress-track">
+          <div id="progressBar" class="progress-fill"></div>
+        </div>
+        <div class="progress-label">
+          <strong id="progressText">0% concluído</strong>
+          <span id="progressDetail">0 de 0 tarefas</span>
+        </div>
+      </section>
+
+      <footer>
+        <p>E.E. Amador e Catharina Saporito Augusto</p>
+        <small>Plataforma de organização dos estudos • 2026</small>
+      </footer>
+    </main>
+  </div>
+</body>
+</html>
